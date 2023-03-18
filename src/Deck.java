@@ -47,4 +47,41 @@ public class Deck {
              cards.set(idx, c);
          }
     }
+
+
+    public String answerChecker(Card card, String answer) {
+        String lowerAnswer = answer.toLowerCase();
+        String correctPhrase = card.getPhrase().toLowerCase();
+        String correctTranslation = card.getPhrase().toLowerCase();
+        if (correctPhrase.equals(lowerAnswer) || correctTranslation.equals(lowerAnswer)) {
+            System.out.println("Correct");
+        } else {
+            int[] dictionaryAnswer = new int[26];
+            int[] dictionaryPhrase = new int[26];
+
+            for (int i = 0; i < answer.length(); i++) {
+                dictionaryAnswer[answer.getCharAt(i) - 61] = dictionaryAnswer[answer.getCharAt(i) - 61] + 1;
+            }
+            for (int i = 0; i < card.getPhrase.length(); i++) {
+                dictionaryPhrase[card.getPhrase.getCharAt(i) - 61] = dictionaryPhrase[card.getPhrase.getCharAt(i) - 61] + 1;
+            }
+            int counter = 0;
+            int difference = 0;
+            for (int i = 0; i < 26; i++){
+                //checking through each char, and counting the same number of characters
+                if (dictionaryAnswer[i] != 0 && dictionaryPhrase[i] != 0 && dictionaryPhrase[i] == dictionaryAnswer[i]) {
+                    counter++;
+                } else if (dictionaryAnswer[i] != dictionaryPhrase[i]){
+                    difference++;
+                }
+            }
+
+            if(difference / counter >= 0.25) {
+                System.out.println("Incorrect");
+            } else {
+                System.out.println("Fix your spelling mistake");
+            }
+        }
+
+    }
 }
