@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -45,6 +46,8 @@ public class LanguageApp extends Application {
     Button createDeckS;
     
     int v = 0;
+    
+    Boolean isF = true;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -147,7 +150,21 @@ public class LanguageApp extends Application {
 		                for (int i = 0; i < decksF.size(); i++) {
 		                	if (b.getText().equals(decksF.get(i).getName())) {
 		                		v = i;
+		                		isF = true;
 		                	}
+		                }
+		                
+		                if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+		        	        int cardNum = 0;
+		        	    	HBox card = new HBox();
+		        	    	Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+		        	    	Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+		        	    	if (decksF.get(v).getCard(cardNum).isFront()) {
+		        	    		card.getChildren().add(phrase);
+		        	    	} else {
+		        	    		card.getChildren().add(translation);
+		        	    	}
+		        	    	run.getChildren().add(card);
 		                }
 					}
 	        		
@@ -174,6 +191,20 @@ public class LanguageApp extends Application {
 			}
         	
         });
+        
+        if (isF== true && decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+	        int cardNum = 0;
+	    	HBox card = new HBox();
+	    	Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+	    	Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+	    	if (decksF.get(v).getCard(cardNum).isFront()) {
+	    		card.getChildren().add(phrase);
+	    	} else {
+	    		card.getChildren().add(translation);
+	    	}
+	    	run.getChildren().add(card);
+        }
+        
         
         
         sceneTest = new Scene(testpage);
@@ -216,7 +247,21 @@ public class LanguageApp extends Application {
 		                for (int i = 0; i < decksS.size(); i++) {
 		                	if (b.getText().equals(decksS.get(i).getName())) {
 		                		v = i;
+		                		//isF = false;
 		                	}
+		                }
+		                
+		                if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+		        	        int cardNum = 0;
+		        	    	HBox card = new HBox();
+		        	    	Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+		        	    	Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+		        	    	if (decksS.get(v).getCard(cardNum).isFront()) {
+		        	    		card.getChildren().add(phrase);
+		        	    	} else {
+		        	    		card.getChildren().add(translation);
+		        	    	}
+		        	    	run.getChildren().add(card);
 		                }
 						
 					}
@@ -231,9 +276,7 @@ public class LanguageApp extends Application {
 			}
         	
         });
-        cardsS.getChildren().addAll(deckNameS, savebtnS);
-        
-
+        cardsS.getChildren().addAll(deckNameS, savebtnS); 
         createDeckF = new Button("Create new deck");
         createDeckF.setOnAction(new EventHandler<ActionEvent>() {
 
