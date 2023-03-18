@@ -20,10 +20,13 @@ public class LanguageApp extends Application {
     }
 
     Scene scene;
+    Scene sceneF;
+    Scene sceneS;
     VBox pick;
     VBox frenchmaster;
     VBox spanishmaster;
-    VBox cards;
+    VBox cardsS;
+    VBox cardsF;
 
     Button frenchbtn;
     Button spanishbtn;
@@ -43,7 +46,8 @@ public class LanguageApp extends Application {
         pick = new VBox();
         frenchmaster = new VBox();
         spanishmaster = new VBox();
-        cards = new VBox();
+        cardsS = new VBox();
+        cardsF = new VBox();
 
 
         //pick language
@@ -57,8 +61,8 @@ public class LanguageApp extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                scene = new Scene(frenchmaster);
-                stage.setScene(scene);
+                sceneF = new Scene(frenchmaster);
+                stage.setScene(sceneF);
                 stage.show();
 
             }
@@ -70,8 +74,8 @@ public class LanguageApp extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                scene = new Scene(spanishmaster);
-                stage.setScene(scene);
+                sceneS = new Scene(spanishmaster);
+                stage.setScene(sceneS);
                 stage.show();
 
             }
@@ -99,30 +103,79 @@ public class LanguageApp extends Application {
         Label MyDecksTitleS = new Label("My Decks");
         MyDecksTitleS.setTextFill(Color.BLUEVIOLET);
         MyDecksTitleS.setFont(new Font("Cambria", 22));
+        	
         
-        ArrayList<Deck> decks = new ArrayList<Deck>();
+        ArrayList<Deck> decksF = new ArrayList<Deck>();
         
-        TextField deckName = new TextField();
-        Button savebtn = new Button("Save");
-        savebtn.setOnAction(new EventHandler<ActionEvent>() {
+        TextField deckNameF = new TextField();
+        Button savebtnF = new Button("Save");
+        savebtnF.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				String a = deckName.getText();
+				String a = deckNameF.getText();
 				Deck newDeck = new Deck(a);
-				decks.add(newDeck);
+				decksF.add(newDeck);
+				Button b = new Button(newDeck.getName());
+	        	b.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						//open up play page
+						
+					}
+	        		
+	        	});
+	        	frenchmaster.getChildren().add(b);
+	        	
+	        	stage.setScene(sceneF);
+                stage.show();
+			}
+        	
+        });
+        cardsF.getChildren().addAll(deckNameF, savebtnF);
+        
+        
+        
+        ArrayList<Deck> decksS = new ArrayList<Deck>();
+        
+        TextField deckNameS = new TextField();
+        Button savebtnS = new Button("Save");
+        savebtnS.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				String a = deckNameS.getText();
+				Deck newDeck = new Deck(a);
+				decksS.add(newDeck);
+	        	Button b = new Button(newDeck.getName());
+	        	b.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						//open up play page
+						
+					}
+	        		
+	        	});
+	        	spanishmaster.getChildren().add(b);
+	        	
+	        	stage.setScene(sceneS);
+                stage.show();
+				
 				
 			}
         	
         });
-        cards.getChildren().addAll(deckName, savebtn);
+        cardsS.getChildren().addAll(deckNameS, savebtnS);
+        
 
         createDeckF = new Button("Create new deck");
         createDeckF.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                scene = new Scene(cards);
+                scene = new Scene(cardsF);
                 stage.setScene(scene);
                 stage.show();
 
@@ -135,7 +188,7 @@ public class LanguageApp extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                scene = new Scene(cards);
+                scene = new Scene(cardsS);
                 stage.setScene(scene);
                 stage.show();
 
@@ -150,7 +203,20 @@ public class LanguageApp extends Application {
         spanishmaster.setPadding(new Insets(50));
         spanishmaster.setSpacing(20);
         spanishmaster.getChildren().addAll(spanishTitle, createDeckS, MyDecksTitleS);
+        
+        for(int i = 0; i<decksF.size(); i++) {
+        	Button b = new Button(decksF.get(i).getName());
+        	b.setOnAction(new EventHandler<ActionEvent>() {
 
+				@Override
+				public void handle(ActionEvent event) {
+					//open up play page
+					
+				}
+        		
+        	});
+        	frenchmaster.getChildren().add(b);
+        }
 
         scene = new Scene(pick);
         stage.setScene(scene);

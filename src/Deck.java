@@ -22,7 +22,11 @@ public class Deck {
     
     public int getNumCards() {
     	//return numCards;
-    	return null;
+    	return -1;
+    }
+    
+    public String getName() {
+    	return name;
     }
     
     public Card findCard(String phrase) {
