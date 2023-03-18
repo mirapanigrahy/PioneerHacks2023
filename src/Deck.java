@@ -53,7 +53,7 @@ public class Deck {
     }
 
 
-    public String answerChecker(Card card, String answer) {
+    public void answerChecker(Card card, String answer) {
         String lowerAnswer = answer.toLowerCase();
         String correctPhrase = card.getPhrase().toLowerCase();
         String correctTranslation = card.getPhrase().toLowerCase();
@@ -64,10 +64,10 @@ public class Deck {
             int[] dictionaryPhrase = new int[26];
 
             for (int i = 0; i < answer.length(); i++) {
-                dictionaryAnswer[answer.getCharAt(i) - 61] = dictionaryAnswer[answer.getCharAt(i) - 61] + 1;
+                dictionaryAnswer[answer.charAt(i) - 61] = dictionaryAnswer[answer.charAt(i) - 61] + 1;
             }
-            for (int i = 0; i < card.getPhrase.length(); i++) {
-                dictionaryPhrase[card.getPhrase.getCharAt(i) - 61] = dictionaryPhrase[card.getPhrase.getCharAt(i) - 61] + 1;
+            for (int i = 0; i < card.getPhrase().length(); i++) {
+                dictionaryPhrase[card.getPhrase().charAt(i) - 61] = dictionaryPhrase[card.getPhrase().charAt(i) - 61] + 1;
             }
             int counter = 0;
             int difference = 0;
