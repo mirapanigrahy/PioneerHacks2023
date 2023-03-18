@@ -26,6 +26,7 @@ public class LanguageApp extends Application {
     Scene sceneCF;
     Scene sceneCS;
     Scene sceneRun;
+    Scene sceneTest;
     
     VBox pick;
     VBox frenchmaster;
@@ -34,6 +35,7 @@ public class LanguageApp extends Application {
     VBox cardsF;
     VBox play;
     VBox run;
+    VBox testpage;
 
     Button frenchbtn;
     Button spanishbtn;
@@ -58,6 +60,10 @@ public class LanguageApp extends Application {
         spanishmaster = new VBox();
         cardsS = new VBox();
         cardsF = new VBox();
+        play = new VBox();
+        run = new VBox();
+        testpage = new VBox();
+
 
 
         //pick language
@@ -169,8 +175,22 @@ public class LanguageApp extends Application {
         	
         });
         
-        Button test = new Button("Test");
         
+        sceneTest = new Scene(testpage);
+        
+        Button test = new Button("Test");
+        runCards.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				stage.setScene(sceneTest);
+                stage.show();
+				
+			}
+        	
+        });
+        
+        play.getChildren().addAll(runCards,test);
         
         
         ArrayList<Deck> decksS = new ArrayList<Deck>();
