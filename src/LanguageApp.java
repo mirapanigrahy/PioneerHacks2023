@@ -184,15 +184,21 @@ public class LanguageApp extends Application {
 		sceneRun = new Scene(run);
 
 		Button runCards = new Button("Run Through Cards");
+		System.out.println(runCards);
 		runCards.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				
+				System.out.println("HERE1");
 				stage.setScene(sceneRun);
 				stage.show();
 				
+				System.out.println("HERE");
 				if (french) {
+					System.out.println(decksF.size());
 					if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+						System.out.println("decksF > 0 and num cards > 0");
 						int cardNum = 0;
 						HBox card = new HBox();
 						Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
@@ -226,7 +232,7 @@ public class LanguageApp extends Application {
 		sceneTest = new Scene(testpage);
 
 		Button test = new Button("Test");
-		runCards.setOnAction(new EventHandler<ActionEvent>() {
+		test.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -260,7 +266,7 @@ public class LanguageApp extends Application {
 			}
 		});
 
-		play.getChildren().addAll(runCards,test, addCards, cardFront, cardBack);
+		play.getChildren().addAll(runCards, test, addCards, cardFront, cardBack);
 
 
 		createDeck = new Button("Create new deck");
