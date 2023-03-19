@@ -103,7 +103,7 @@ public class LanguageApp extends Application {
 		spanishTitle.setFont(f);
 
 		MyDecksTitle.setTextFill(c);
-		MyDecksTitle.setFont(f);
+		MyDecksTitle.setFont(new Font("Impact", 25));
 
 		// VBoxes
 
@@ -194,6 +194,7 @@ public class LanguageApp extends Application {
 			for (int i = 0; i < decksF.size(); i++) {
 				Button b = new Button(decksF.get(i).getName());
 				b.setStyle("-fx-background-color: #F8E8E8FF");
+				b.setPadding(new Insets(20, 20, 20, 20));
 				b.setOnMousePressed(new EventHandler<MouseEvent>() {
 		
 					@Override
@@ -217,6 +218,7 @@ public class LanguageApp extends Application {
 			for (int i = 0; i < decksS.size(); i++) {
 				Button b = new Button(decksS.get(i).getName());
 				b.setStyle("-fx-background-color: #F8E8E8FF");
+				b.setPadding(new Insets(20, 20, 20, 20));
 				b.setOnMousePressed(new EventHandler<MouseEvent>() {
 		
 					@Override
@@ -348,6 +350,7 @@ public class LanguageApp extends Application {
 			}
 		});
 		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		backbtn.setTextFill(btnColor);
 		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -367,7 +370,7 @@ public class LanguageApp extends Application {
 		ArrayList<TextField> arr = new ArrayList<TextField>();
 		
 		testpage.getChildren().clear();
-		testpage.setPadding(p);
+		//testpage.setPadding(p);
 		testpage.setSpacing(10);
 		
 		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
