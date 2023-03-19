@@ -27,6 +27,9 @@ public class LanguageApp extends Application {
     Scene sceneCS;
     Scene sceneRun;
     Scene sceneTest;
+
+    Scene cardScene;
+
     
     VBox pick;
     VBox frenchmaster;
@@ -36,6 +39,7 @@ public class LanguageApp extends Application {
     VBox play;
     VBox run;
     VBox testpage;
+    VBox cardHolder;
 
     Button frenchbtn;
     Button spanishbtn;
@@ -43,7 +47,7 @@ public class LanguageApp extends Application {
 
     Button createDeckF;
     Button createDeckS;
-    
+
     int v = 0;
 
     @Override
@@ -106,6 +110,7 @@ public class LanguageApp extends Application {
 
         //decks
         scenePlay = new Scene(play);
+        //cardScene = new Scene(cardHolder);
 
         Label frenchTitle = new Label("French to English");
         frenchTitle.setTextFill(Color.BLUEVIOLET);
@@ -130,7 +135,8 @@ public class LanguageApp extends Application {
         Button savebtnF = new Button("Save");
         savebtnF.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
+            /* French Create a Deck Button */
+            @Override
 			public void handle(ActionEvent event) {
 				String a = deckNameF.getText();
 				deckNameF.clear();
@@ -149,18 +155,31 @@ public class LanguageApp extends Application {
 		                		v = i;
 		                	}
 		                }
+
+                        Button addCards = new Button("Add Card");
+                        addCards.setOnAction(new EventHandler<ActionEvent>() {
+                        TextField cardFront = new TextField();
+                        TextField cardBack = new TextField();
+                            @Override
+                            public void handle(ActionEvent event) {
+                                String cf = cardFront.getText();
+                                String cb = cardBack.getText();
+                                Card c = new Card(cf, cb, true);
+                                decksF.get(v).addCard(c);
+                            }
+                        });
 					}
 	        		
 	        	});
 	        	frenchmaster.getChildren().add(b);
-	        	
+
 	        	stage.setScene(sceneF);
                 stage.show();
 			}
         	
         });
         cardsF.getChildren().addAll(deckNameF, savebtnF);
-        
+
         sceneRun = new Scene(run);
         
         Button runCards = new Button("Run Through Cards");
