@@ -336,6 +336,12 @@ public class LanguageApp extends Application {
 			public void handle(ActionEvent event) {
 				stage.setScene(sceneTest);
 				stage.show();
+				
+				if (french) {
+					
+				} else {
+					
+				}
 
 			}
 
@@ -353,10 +359,8 @@ public class LanguageApp extends Application {
 				
 				if (french) {
 					decksF.get(v).addCard(c);
-					System.out.println("f: " + decksF.get(v));
 				} else {
 					decksS.get(v).addCard(c);
-					System.out.println("s: " + decksS.get(v));
 				}
 				
 				run.getChildren().clear();
