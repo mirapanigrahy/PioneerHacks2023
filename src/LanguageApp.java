@@ -364,11 +364,14 @@ public class LanguageApp extends Application {
 	
 	public void testSceneInit(Stage stage) {
 		
+		ArrayList<TextField> arr = new ArrayList<TextField>();
+		
 		testpage.getChildren().clear();
 		testpage.setPadding(p);
 		testpage.setSpacing(10);
 		
 		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		
 		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -384,24 +387,53 @@ public class LanguageApp extends Application {
 		if (french) {
 			for (int i = 0; i < decksF.get(v).getNumCards(); i++) {
 				HBox card = new HBox();
-				card.setStyle("-fx-background-color: #FFFFFFFF");
 				card.setPadding(p);
 				Label phrase = new Label(decksF.get(v).getCard(i).getPhrase());
 				card.getChildren().add(phrase);
 				TextField ans = new TextField();
+				arr.add(ans);
 				testpage.getChildren().addAll(card, ans);
 			}
 		} else {
 			for (int i = 0; i < decksS.get(v).getNumCards(); i++) {
 				HBox card = new HBox();
-				card.setStyle("-fx-background-color: #FFFFFFFF");
 				card.setPadding(p);
 				Label phrase = new Label(decksS.get(v).getCard(i).getPhrase());
 				card.getChildren().add(phrase);
 				TextField ans = new TextField();
+				arr.add(ans);
 				testpage.getChildren().addAll(card, ans);
 			}
-		}	
+		}
+		
+		Button submitBtn = new Button("Submit"); 
+		submitBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				Label response = response = new Label("");
+				for (int i = 0; i < arr.size(); i++) {
+					int n = -1;
+					if (french) {
+						n = decksF.get(v).getCard(i).answerChecker(arr.get(i).getText());
+					} else {
+						n = decksS.get(v).getCard(i).answerChecker(arr.get(i).getText());
+					}
+					if (n == 0) {
+						response = new Label((i + 1) + ") Correct!");
+					} else if (n == 1) {
+						response = new Label((i + 1) + ") Incorrect");
+					} else if (n == 2) {
+						response = new Label((i + 1) + ") Spelling Error");
+					}
+					
+					testpage.getChildren().add(response);
+					testpage.getChildren().remove(submitBtn);
+				}
+				
+			}
+		});
+		
+		testpage.getChildren().add(submitBtn);
 	}
 	
 	public void runSceneInit(Stage stage) {
@@ -426,12 +458,16 @@ public class LanguageApp extends Application {
 				HBox card = new HBox();
 				card.setStyle("-fx-background-color: #FFFFFFFF");
 				card.setPadding(p);
+				Label englishTitle = new Label("English:");
+				Label frenchTitle = new Label("French:");
 				Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
 				Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
 				if (decksF.get(v).getCard(cardNum).isFront()) {
 					card.getChildren().add(phrase);
+					run.getChildren().add(englishTitle);
 				} else {
 					card.getChildren().add(translation);
+					run.getChildren().add(frenchTitle);
 				}
 				run.getChildren().add(card);
 			}
@@ -440,12 +476,16 @@ public class LanguageApp extends Application {
 				HBox card = new HBox();
 				card.setStyle("-fx-background-color: #FFFFFFFF");
 				card.setPadding(p);
+				Label englishTitle = new Label("English:");
+				Label spanishTitle = new Label("Spanish:");
 				Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
 				Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
 				if (decksS.get(v).getCard(cardNum).isFront()) {
 					card.getChildren().add(phrase);
+					run.getChildren().add(englishTitle);
 				} else {
 					card.getChildren().add(translation);
+					run.getChildren().add(spanishTitle);
 				}
 				run.getChildren().add(card);
 			}
@@ -470,12 +510,16 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label frenchLbl = new Label("French:");
 							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
 							if (decksF.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(frenchLbl);
 							}
 							run.getChildren().addAll(card);
 						}
@@ -484,12 +528,16 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label spanishLbl = new Label("Spanish:");
 							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
 							if (decksS.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(spanishLbl);
 							}
 							run.getChildren().addAll(card);
 						}
@@ -499,9 +547,23 @@ public class LanguageApp extends Application {
 				if (e.getCode().equals(KeyCode.RIGHT)) {	
 										
 					if (french) {
-						if (cardNum < decksF.get(v).getNumCards() - 1) cardNum++;
+						if (cardNum < decksF.get(v).getNumCards() - 1) {
+							cardNum++;
+						} else {
+							run.getChildren().clear();
+							Label l = new Label("You have completed the deck!");
+							run.getChildren().addAll(l, backbtn);
+							return;
+						}
 					} else {
-						if (cardNum < decksS.get(v).getNumCards() - 1) cardNum++;
+						if (cardNum < decksS.get(v).getNumCards() - 1) {
+							cardNum++;
+						} else {
+							run.getChildren().clear();
+							Label l = new Label("You have completed the deck!");
+							run.getChildren().addAll(l, backbtn);
+							return;
+						}
 					}
 
 					run.getChildren().clear();
@@ -511,12 +573,16 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label frenchLbl = new Label("French:");
 							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
 							if (decksF.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(frenchLbl);
 							}
 							run.getChildren().addAll(card);
 						}
@@ -525,12 +591,16 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label spanishLbl = new Label("Spanish:");
 							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
 							if (decksS.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(spanishLbl);
 							}
 							run.getChildren().addAll(card);
 						}
@@ -547,12 +617,16 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label frenchLbl = new Label("French:");
 							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
 							if (decksF.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(frenchLbl);
 							}
 							run.getChildren().add(card);
 						}
@@ -562,18 +636,21 @@ public class LanguageApp extends Application {
 							HBox card = new HBox();
 							card.setStyle("-fx-background-color: #FFFFFFFF");
 							card.setPadding(p);
+							Label englishLbl = new Label("English:");
+							Label spanishLbl = new Label("Spanish:");
 							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
 							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
 							if (decksS.get(v).getCard(cardNum).isFront()) {
 								card.getChildren().add(phrase);
+								run.getChildren().add(englishLbl);
 							} else {
 								card.getChildren().add(translation);
+								run.getChildren().add(spanishLbl);
 							}
 							run.getChildren().add(card);
 						}
 					}
-				}
-								
+				}				
 			}
 		});	
 	}	
