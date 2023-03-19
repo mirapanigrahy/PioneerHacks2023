@@ -20,6 +20,10 @@ public class Deck {
     	cards.add(card);
     }
     
+    public Card getCard(int i) {
+    	return cards.get(i);
+    }
+    
     public int getNumCards() {
     	//return numCards;
     	return -1;
