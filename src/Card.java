@@ -60,14 +60,8 @@ public class Card extends Actor {
                     difference += Math.abs(dictionaryAnswer[i] - dictionaryTranslation[i]);
                 }
             }
-            
-            System.out.println(Arrays.toString(dictionaryAnswer));
-            System.out.println(Arrays.toString(dictionaryTranslation));
-            
-            System.out.println("c " + counter + " d " + difference);
-            System.out.println("ratio " + ((double)difference / (difference + counter)));
 
-            if((double)difference / (difference + counter) >= 0.5) {
+            if((double)difference / (difference + counter) > 0.5) {
             	//wrong
                 return 1;
             } else {

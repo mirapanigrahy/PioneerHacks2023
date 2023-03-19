@@ -8,10 +8,7 @@ import java.net.URLEncoder;
 public class Translator {
 
     public static void main(String[] args) throws IOException {
-        String text = "happy dog";
-        //Translated text: Hallo Welt!
-        System.out.println(translate("en", "es", text));
-        
+   
     }
 
     public static String translate(String langFrom, String langTo, String text) throws IOException {
@@ -30,7 +27,7 @@ public class Translator {
             response.append(inputLine);
         }
         in.close();
-        return response.toString().contains("!") || response.toString().contains("?") ? response.toString().substring(1) : response.toString();
+        return response.toString();
     }
 
 }

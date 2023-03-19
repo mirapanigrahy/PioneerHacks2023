@@ -5,6 +5,19 @@ public class Deck {
     ArrayList<Card> cards = new ArrayList<Card>();
     private String name;
 
+    public Deck(String info, boolean lang) {
+        cards = new ArrayList<Card>();
+        String[] str = info.split(" ");
+        int count = 1;
+        name = str[0];
+        for (int i = 0; i < Integer.parseInt(str[1]); i++) {
+            String phrase = str[++count];
+            String translation = str[++count];
+            Card c = new Card(phrase, translation, true);
+            cards.add(c);
+        }
+    }
+    
     public Deck(String name, ArrayList<Card> cards) {
         this.cards = cards;
         this.name = name;
@@ -41,6 +54,17 @@ public class Deck {
     
     public void removeCard(Card card) {
     	cards.remove(card);
+    }
+
+    
+    public String convToInfo() {
+        String info = name + " " + cards.size() + " ";
+        for (int i = 0; i < cards.size(); i++) {
+            Card c = cards.get(i);
+            info += c.getPhrase() + " ";
+            info += c.getTranslation() + " ";
+        }
+        return info;
     }
     
     public void shuffle() {

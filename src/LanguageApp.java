@@ -1,6 +1,14 @@
+import java.awt.Scrollbar;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+import javax.swing.JFileChooser;
 
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
@@ -9,10 +17,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -46,7 +57,7 @@ public class LanguageApp extends Application {
 	Button savebtn = new Button("Save");
 	Button addCards = new Button("Add Card");
 	Button backbtn = new Button("Back");
-	Button createDeck = new Button("Create new deck");
+	Button createDeck = new Button("Create a New Deck");
 	
 	Label frenchTitle = new Label("French to English");
 	Label spanishTitle = new Label("Spanish to English");
@@ -183,12 +194,41 @@ public class LanguageApp extends Application {
 			}
 
 		});
+		
+		Button saveDecks = new Button("Save Decks");
+		saveDecks.setStyle("-fx-background-color: #F8E8E8FF");
+		saveDecks.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				saveBoard();
+			}
+			
+		});
+		
+		Button restoreDecks = new Button("Restore Decks");
+		restoreDecks.setStyle("-fx-background-color: #F8E8E8FF");
+		restoreDecks.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				restoreBoard();
+				langSceneInit(stage);
+			}
+		});
+		
+		HBox bx = new HBox();
+		bx.setSpacing(20);
+		bx.getChildren().addAll(backbtn, saveDecks, restoreDecks);
+		
 
 		if (french) {
-			master.getChildren().addAll(backbtn, frenchTitle, createDeck, MyDecksTitle);
+			master.getChildren().addAll(bx, frenchTitle, createDeck, MyDecksTitle);
 		} else {
-			master.getChildren().addAll(backbtn, spanishTitle, createDeck, MyDecksTitle);
+			master.getChildren().addAll(bx, spanishTitle, createDeck, MyDecksTitle);
 		}
+		
+		VBox paneBox = new VBox();
+		FlowPane pane = new FlowPane();
+		
 		
 		if (french) {
 			for (int i = 0; i < decksF.size(); i++) {
@@ -211,7 +251,7 @@ public class LanguageApp extends Application {
 		
 					}
 				});
-				master.getChildren().add(b);
+				pane.getChildren().add(b);
 			}
 		} else {
 		
@@ -234,9 +274,14 @@ public class LanguageApp extends Application {
 						}
 					}
 				});
-				master.getChildren().add(b);
+				pane.getChildren().add(b);
 			}
 		}
+		
+		pane.setVgap(10);
+		pane.setHgap(10);
+		paneBox.getChildren().add(pane);
+		master.getChildren().add(paneBox);
 		
 	}
 
@@ -251,6 +296,9 @@ public class LanguageApp extends Application {
 		savebtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				if(deckName.getText().equals("")) {
+					return;
+				}
 				String a = deckName.getText();
 				deckName.clear();
 				Deck newDeck = new Deck(a);
@@ -322,6 +370,9 @@ public class LanguageApp extends Application {
 		addCards.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				if (cardFront.getText().equals("")) {
+					return;
+				}
 				String cf = cardFront.getText();
 				try {
 					if (french) {
@@ -329,14 +380,11 @@ public class LanguageApp extends Application {
 					} else {
 						cardBack.setText(Translator.translate("en", "es", cardFront.getText()));
 					}
-					System.out.println(cardBack.getText());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					System.out.println("failed");
 					e.printStackTrace();
 				}
 				String cb = cardBack.getText();
-				//cardBack.setText("");
 				cardFront.clear();
 				Card c = new Card(cf, cb, true);
 				
@@ -370,7 +418,7 @@ public class LanguageApp extends Application {
 		ArrayList<TextField> arr = new ArrayList<TextField>();
 		
 		testpage.getChildren().clear();
-		//testpage.setPadding(p);
+		testpage.setPadding(p);
 		testpage.setSpacing(10);
 		
 		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
@@ -385,13 +433,21 @@ public class LanguageApp extends Application {
 			
 		});
 		
+		if ((french && decksF.get(v).getNumCards() == 0) || (!french && decksS.get(v).getNumCards() == 0)) {
+			Label l = new Label("There are no cards in this deck");
+			testpage.getChildren().addAll(l, backbtn);
+			return;
+		}
+		
 		testpage.getChildren().add(backbtn);
 		
 		if (french) {
 			for (int i = 0; i < decksF.get(v).getNumCards(); i++) {
 				HBox card = new HBox();
-				card.setPadding(p);
+				//card.setPadding(p);
 				Label phrase = new Label(decksF.get(v).getCard(i).getPhrase());
+				phrase.setFont(new Font(15));
+				phrase.setTextFill(c);
 				card.getChildren().add(phrase);
 				TextField ans = new TextField();
 				arr.add(ans);
@@ -400,8 +456,10 @@ public class LanguageApp extends Application {
 		} else {
 			for (int i = 0; i < decksS.get(v).getNumCards(); i++) {
 				HBox card = new HBox();
-				card.setPadding(p);
+				//card.setPadding(p);
 				Label phrase = new Label(decksS.get(v).getCard(i).getPhrase());
+				phrase.setFont(new Font(15));
+				phrase.setTextFill(c);
 				card.getChildren().add(phrase);
 				TextField ans = new TextField();
 				arr.add(ans);
@@ -413,20 +471,25 @@ public class LanguageApp extends Application {
 		submitBtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Label response = response = new Label("");
+				Label response = new Label("");
 				for (int i = 0; i < arr.size(); i++) {
-					int n = -1;
-					if (french) {
-						n = decksF.get(v).getCard(i).answerChecker(arr.get(i).getText());
-					} else {
-						n = decksS.get(v).getCard(i).answerChecker(arr.get(i).getText());
-					}
-					if (n == 0) {
-						response = new Label((i + 1) + ") Correct!");
-					} else if (n == 1) {
+					
+					if (arr.get(i).getText().equals("")) {
 						response = new Label((i + 1) + ") Incorrect");
-					} else if (n == 2) {
-						response = new Label((i + 1) + ") Spelling Error");
+					} else {
+						int n = -1;
+						if (french) {
+							n = decksF.get(v).getCard(i).answerChecker(arr.get(i).getText());
+						} else {
+							n = decksS.get(v).getCard(i).answerChecker(arr.get(i).getText());
+						}
+						if (n == 0) {
+							response = new Label((i + 1) + ") Correct!");
+						} else if (n == 1) {
+							response = new Label((i + 1) + ") Incorrect");
+						} else if (n == 2) {
+							response = new Label((i + 1) + ") Spelling Error");
+						}
 					}
 					
 					testpage.getChildren().add(response);
@@ -455,6 +518,13 @@ public class LanguageApp extends Application {
 			}
 			
 		});
+		
+		if ((french && decksF.get(v).getNumCards() == 0) || (!french && decksS.get(v).getNumCards() == 0)) {
+			run.getChildren().clear();
+			Label l = new Label("There are no cards in this deck");
+			run.getChildren().addAll(l, backbtn);
+			return;
+		}
 				
 		if (french) {
 			if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
@@ -500,6 +570,9 @@ public class LanguageApp extends Application {
 			public void handle (KeyEvent e) {
 				
 				if ((french && decksF.get(v).getNumCards() == 0) || (!french && decksS.get(v).getNumCards() == 0)) {
+					run.getChildren().clear();
+					Label l = new Label("There are no cards in this deck");
+					run.getChildren().addAll(l, backbtn);
 					return;
 				}
 				
@@ -656,5 +729,65 @@ public class LanguageApp extends Application {
 				}				
 			}
 		});	
-	}	
+	}
+	
+	 public void saveBoard() {
+	        JFileChooser chooser = new JFileChooser(".");
+	        chooser.showSaveDialog(null);
+	        try {
+	            File board = chooser.getSelectedFile();
+	            FileWriter out = new FileWriter(board);
+	            
+	            if (french) {
+	            	out.write(decksF.size() + "");
+	            	for (int i = 0; i < decksF.size(); i++) {
+		                out.write("\n" + decksF.get(i).convToInfo());
+		            }
+	            } else {
+	            	out.write(decksS.size() + "");
+	            	for (int i = 0; i < decksS.size(); i++) {
+		                out.write("\n" + decksS.get(i).convToInfo());
+		            }
+	            }
+	            out.close();
+	        } catch (IOException e) {
+	            e.getMessage();
+	        }
+	    }
+	
+	public void restoreBoard() {
+        JFileChooser chooser = new JFileChooser(".");
+        chooser.showOpenDialog(null);
+        try {
+            File in = chooser.getSelectedFile();
+            Scanner input = new Scanner(in);
+            if (french) {
+            	decksF = new ArrayList<Deck>();
+            } else {
+            	decksS = new ArrayList<Deck>();
+            }
+
+            int st = input.nextInt();
+            if (st > 0) {
+                input.nextLine();            
+                for (int i = 0; i < st; i++) {
+                    Deck d = new Deck(input.nextLine(), french);   
+                    if (french) {
+                    	decksF.add(d);
+                    } else {
+                    	decksS.add(d);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("\nInvalid command.");
+        } catch (NullPointerException e) {
+            System.out.println("\nInvalid command.");
+        } catch (InputMismatchException e) {
+            System.out.println("\nInvalid command.");
+        } catch (NoSuchElementException e) {
+            System.out.println("\nInvalid command.");
+        }
+    }
 }
