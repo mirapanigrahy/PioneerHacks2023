@@ -26,30 +26,45 @@ public class LanguageApp extends Application {
 	Scene scene;
 	Scene sceneLang;
 	Scene scenePlay;
-	Scene sceneC;
+	Scene sceneCD;
 	Scene sceneRun;
-	Scene sceneTest;
+	Scene sceneTest;	
+	
+	VBox pick = new VBox();
+	VBox master = new VBox();
+	VBox cards = new VBox();
+	VBox play = new VBox();
+	VBox run = new VBox();
+	VBox testpage = new VBox();
 
-	Scene cardScene;
-
-
-	VBox pick;
-	VBox master;
-	VBox cards;
-	VBox play;
-	VBox run;
-	VBox testpage;
-	VBox cardHolder;
-
-	Button frenchbtn;
-	Button spanishbtn;
-	Button englishbtn;
-
-	Button createDeck;
-	HashSet<KeyCode> keycodeDown;
+	Button frenchbtn = new Button("French to English");
+	Button spanishbtn = new Button("Spanish to English");
+	Button runCards = new Button("Run Through Cards");
+	Button test = new Button("Test");
+	Button savebtn = new Button("Save");
+	Button addCards = new Button("Add Card");
+	Button backbtn = new Button("Back");
+	Button createDeck = new Button("Create new deck");
+	
+	Label frenchTitle = new Label("French to English");
+	Label spanishTitle = new Label("Spanish to English");
+	Label MyDecksTitle = new Label("My Decks");
+	Label pickTitle = new Label("What Language Do You Want?");
+	
+	TextField deckName = new TextField();
+	TextField cardFront = new TextField();
+	TextField cardBack = new TextField();
+	
 	int cardNum = 0;
 	int v = 0;
 	boolean french = true;
+	
+	Color btnColor = new Color((double)13/255,(double)89/255,(double)86/255,1);
+	Color c = new Color((double)25/255,(double)95/255,(double)109/255,1);
+	
+	ArrayList<Deck> decksF = new ArrayList<Deck>();
+	ArrayList<Deck> decksS = new ArrayList<Deck>();
+	
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -58,94 +73,170 @@ public class LanguageApp extends Application {
 		stage.setHeight(400);
 		stage.setMinWidth(400);
 		stage.setMinHeight(400);
+		
+		scene = new Scene(pick);
+		scenePlay = new Scene(play);
+		sceneCD = new Scene(cards);
+		sceneTest = new Scene(testpage);
+		sceneRun = new Scene(run);
+		sceneLang = new Scene(master);
 
-		//pages
-		pick = new VBox();
-		master = new VBox();
-		cards = new VBox();
-		play = new VBox();
-		run = new VBox();
-		testpage = new VBox();
+
 		pick.setStyle("-fx-background-color: #ffd7b5");
 		master.setStyle("-fx-background-color: #ffd7b5");
 		cards.setStyle("-fx-background-color: #ffd7b5");
 		play.setStyle("-fx-background-color: #ffd7b5");
 		run.setStyle("-fx-background-color: #ffd7b5");
 		testpage.setStyle("-fx-background-color: #ffd7b5");
+		
+		// Labels
+		
+		frenchTitle.setTextFill(c);
+		frenchTitle.setFont(new Font("Cambria", 32));
+
+		spanishTitle.setTextFill(c);
+		spanishTitle.setFont(new Font("Cambria", 32));
+
+		MyDecksTitle.setTextFill(c);
+		MyDecksTitle.setFont(new Font("Cambria", 22));
 
 
-		//pick language
+		// VBoxes
 
-		Label pickTitle = new Label("Pick a language");
-		Color c = new Color((double)25/255,(double)95/255,(double)109/255,1);
-		pickTitle.setTextFill(c);
-		pickTitle.setFont(new Font("Cambria", 32));
+		pick.setPadding(new Insets(50));
+		pick.setSpacing(20);
+		
+		master.setPadding(new Insets(50));
+		master.setSpacing(20);
+		
+		
+		startSceneInit(stage);
 
-		Color btnColor = new Color((double)13/255,(double)89/255,(double)86/255,1);
-
-		frenchbtn = new Button("French to English");
+		stage.setScene(scene);
+		stage.show();
+		
+	}
+	
+	public void startSceneInit(Stage stage) {
+		pick.getChildren().clear();
+		
 		frenchbtn.setStyle("-fx-background-color: #F8E8E8FF");
 		frenchbtn.setTextFill(btnColor);
+		spanishbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		spanishbtn.setTextFill(btnColor);
+		pickTitle.setTextFill(c);
+		pickTitle.setFont(new Font("Cambria", 22));
 
-		sceneLang = new Scene(master);
 		frenchbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-
+				french = true;
+				langSceneInit(stage);
 				stage.setScene(sceneLang);
 				stage.show();
 			}
 
 		});
 
-		spanishbtn = new Button("Spanish to English");
-		spanishbtn.setStyle("-fx-background-color: #F8E8E8FF");
-		spanishbtn.setTextFill(btnColor);
 		spanishbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				french = false;
+				langSceneInit(stage);
 				stage.setScene(sceneLang);
 				stage.show();
 			}
 		});
-
-		pick.setPadding(new Insets(50));
-		pick.setSpacing(20);
+		
 		pick.getChildren().addAll(pickTitle, frenchbtn, spanishbtn);
+	}
+	
+	public void langSceneInit(Stage stage) {
+		master.getChildren().clear();
+		
+		backbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				startSceneInit(stage);
+				stage.setScene(scene);
+				stage.show();	
+			}
+			
+		});
+		
+		createDeck.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				newDeckSceneInit(stage);
+				stage.setScene(sceneCD);
+				stage.show();
 
-		//decks
-		scenePlay = new Scene(play);
-		//cardScene = new Scene(cardHolder);
+			}
 
-		Label frenchTitle = new Label("French to English");
-		frenchTitle.setTextFill(c);
-		frenchTitle.setFont(new Font("Cambria", 32));
+		});
 
-		Label spanishTitle = new Label("Spanish to English");
-		spanishTitle.setTextFill(c);
-		spanishTitle.setFont(new Font("Cambria", 32));
+		if (french) {
+			master.getChildren().addAll(frenchTitle, createDeck, MyDecksTitle, backbtn);
+		} else {
+			master.getChildren().addAll(spanishTitle, createDeck, MyDecksTitle, backbtn);
+		}
+		
+		if (french) {
+			for (int i = 0; i < decksF.size(); i++) {
+				Button b = new Button(decksF.get(i).getName());
+				b.setOnAction(new EventHandler<ActionEvent>() {
+		
+					@Override
+					public void handle(ActionEvent event) {
+						playInit(stage);
+						stage.setScene(scenePlay);
+						stage.show();
+		
+						for (int i = 0; i < decksF.size(); i++) {
+							if (b.getText().equals(decksF.get(i).getName())) {
+								v = i;
+							}
+						}
+		
+					}
+				});
+				master.getChildren().add(b);
+			}
+		} else {
+		
+			for (int i = 0; i < decksS.size(); i++) {
+				Button b = new Button(decksS.get(i).getName());
+				b.setOnAction(new EventHandler<ActionEvent>() {
+		
+					@Override
+					public void handle(ActionEvent event) {
+						playInit(stage);
+						stage.setScene(scenePlay);
+						stage.show();
+		
+						for (int i = 0; i < decksS.size(); i++) {
+							if (b.getText().equals(decksS.get(i).getName())) {
+								v = i;
+							}
+						}
+					}
+				});
+				master.getChildren().add(b);
+			}
+		}
+		
+	}
 
-		Label MyDecksTitleF = new Label("My Decks");
-		MyDecksTitleF.setTextFill(c);
-		MyDecksTitleF.setFont(new Font("Cambria", 22));
-
-		Label MyDecksTitleS = new Label("My Decks");
-		MyDecksTitleS.setTextFill(c);
-		MyDecksTitleS.setFont(new Font("Cambria", 22));
-
-
-		ArrayList<Deck> decksF = new ArrayList<Deck>();
-		ArrayList<Deck> decksS = new ArrayList<Deck>();
-
-		TextField deckName = new TextField();
-		Button savebtn = new Button("Save");
+	public void newDeckSceneInit(Stage stage) {
+		cards.getChildren().clear();
+		
 		savebtn.setStyle("-fx-background-color: #F8E8E8FF");
 		savebtn.setTextFill(btnColor);
+		
 		savebtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				String a = deckName.getText();
@@ -156,221 +247,45 @@ public class LanguageApp extends Application {
 				} else {
 					decksS.add(newDeck);
 				}
-				
-				System.out.println(decksF);
-				System.out.println("f deck size " + decksF.size());
-				System.out.println(decksS);
-				System.out.println("s deck size " + decksS.size());
-				Button b = new Button(newDeck.getName());
-				b.setOnAction(new EventHandler<ActionEvent>() {
 
-					@Override
-					public void handle(ActionEvent event) {
-						stage.setScene(scenePlay);
-						stage.show();
-
-						if (french) {
-							for (int i = 0; i < decksF.size(); i++) {
-								if (b.getText().equals(decksF.get(i).getName())) {
-									v = i;
-								}
-							}
-
-						} else {
-							for (int i = 0; i < decksS.size(); i++) {
-								if (b.getText().equals(decksS.get(i).getName())) {
-									v = i;
-								}
-							}
-						}	
-					}
-				});
-				master.getChildren().add(b);
-
+				langSceneInit(stage);
 				stage.setScene(sceneLang);
 				stage.show();
 			}
-
 		});
-
+		
 		cards.getChildren().addAll(deckName, savebtn);
-
-		sceneRun = new Scene(run);
-
-		Button runCards = new Button("Run Through Cards");
+	}
+	
+	public void playInit(Stage stage) {
+		play.getChildren().clear();
+		
+		test.setStyle("-fx-background-color: #F8E8E8FF");
+		test.setTextFill(btnColor);
 		runCards.setStyle("-fx-background-color: #F8E8E8FF");
-		runCards.setTextFill(btnColor);
-		System.out.println(runCards);
+		runCards.setTextFill(btnColor);	
+
 		runCards.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				cardNum = 0;
-				
+				runSceneInit(stage);
 				stage.setScene(sceneRun);
 				stage.show();
-				
-				if (french) {
-					if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-						HBox card = new HBox();
-						Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-						Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-						if (decksF.get(v).getCard(cardNum).isFront()) {
-							card.getChildren().add(phrase);
-						} else {
-							card.getChildren().add(translation);
-						}
-						run.getChildren().add(card);
-					}
-				} else {
-					if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
-						HBox card = new HBox();
-						Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
-						Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
-						if (decksS.get(v).getCard(cardNum).isFront()) {
-							card.getChildren().add(phrase);
-						} else {
-							card.getChildren().add(translation);
-						}
-						run.getChildren().add(card);
-					}
-				}
-				
-				sceneRun.setOnKeyPressed(new EventHandler<KeyEvent>() {
-					
-					@Override
-					public void handle (KeyEvent e) {
-						if (e.getCode().equals(KeyCode.LEFT)) {	
-							
-							if (cardNum > 0) cardNum--;
-							run.getChildren().clear();
-							
-							if (french) {
-								if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-									if (decksF.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							} else {
-								if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
-									if (decksS.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							}
-						}
-						
-						if (e.getCode().equals(KeyCode.RIGHT)) {	
-							
-							if (french) {
-								if (cardNum < decksF.get(v).getNumCards() - 1) cardNum++;
-							} else {
-								if (cardNum < decksS.get(v).getNumCards() - 1) cardNum++;
-							}
-
-							run.getChildren().clear();
-							
-							if (french) {
-								if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-									if (decksF.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							} else {
-								if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
-									if (decksS.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							}
-						}
-						
-						if (e.getCode().equals(KeyCode.SPACE)) {
-							
-							run.getChildren().clear();
-							decksF.get(v).getCard(cardNum).flip();
-							
-							if (french) {
-								if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-									if (decksF.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							} else {
-								if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
-									HBox card = new HBox();
-									Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
-									Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
-									if (decksS.get(v).getCard(cardNum).isFront()) {
-										card.getChildren().add(phrase);
-									} else {
-										card.getChildren().add(translation);
-									}
-									run.getChildren().add(card);
-								}
-							}
-						}
-					}
-				});
 			}
 		});
-				
-		sceneTest = new Scene(testpage);
-
-		Button test = new Button("Test");
-		test.setStyle("-fx-background-color: #F8E8E8FF");
-		test.setTextFill(btnColor);
-
+		
 		test.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				testSceneInit(stage);
 				stage.setScene(sceneTest);
 				stage.show();
-				
-				if (french) {
-					
-				} else {
-					
-				}
-
 			}
-
 		});
-
-		TextField cardFront = new TextField();
-		TextField cardBack = new TextField();
-		Button addCards = new Button("Add Card");
+		
 		addCards.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -384,60 +299,205 @@ public class LanguageApp extends Application {
 					decksS.get(v).addCard(c);
 				}
 				
-				run.getChildren().clear();
-				
+				run.getChildren().clear();	
 			}
 		});
-
-		play.getChildren().addAll(runCards, test, addCards, cardFront, cardBack);
-
-
-		createDeck = new Button("Create new deck");
-		createDeck.setOnAction(new EventHandler<ActionEvent>() {
-
+		
+		backbtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-
-				stage.setScene(sceneC);
-				stage.show();
-
+				langSceneInit(stage);
+				stage.setScene(sceneLang);
+				stage.show();	
 			}
-
+			
 		});
-
-		sceneC = new Scene(cards);
-
-		master.setPadding(new Insets(50));
-		master.setSpacing(20);
 		
-		if (french) {
-			master.getChildren().addAll(frenchTitle, createDeck, MyDecksTitleF);
-		} else {
-			master.getChildren().addAll(frenchTitle, createDeck, MyDecksTitleS);
-		}
-
-		
-		//FIXXX
-		
-		for(int i = 0; i < decksF.size(); i++) {
-			Button b = new Button(decksF.get(i).getName());
-			b.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					//open up play page
-
-				}
-
-			});
-			master.getChildren().add(b);
-		}	
-
-		scene = new Scene(pick);
-
-		stage.setScene(scene);
-		stage.show();
-		
+		play.getChildren().addAll(backbtn, runCards, test, addCards, cardFront, cardBack);
 	}
 	
+	public void testSceneInit(Stage stage) {
+		
+		testpage.getChildren().clear();
+		
+		if (french) {
+			for (int i = 0; i < decksF.get(v).getNumCards(); i++) {
+				HBox card = new HBox();
+				Label phrase = new Label(decksF.get(v).getCard(i).getPhrase());
+				card.getChildren().add(phrase);
+				TextField ans = new TextField();
+				testpage.getChildren().addAll(card, ans);
+			}
+		} else {
+			for (int i = 0; i < decksS.get(v).getNumCards(); i++) {
+				HBox card = new HBox();
+				Label phrase = new Label(decksS.get(v).getCard(i).getPhrase());
+				card.getChildren().add(phrase);
+				TextField ans = new TextField();
+				testpage.getChildren().addAll(card, ans);
+			}
+		}
+		
+		backbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				langSceneInit(stage);
+				stage.setScene(sceneLang);
+				stage.show();	
+			}
+			
+		});
+		
+		testpage.getChildren().add(backbtn);
+	}
+	
+	public void runSceneInit(Stage stage) {
+		
+		run.getChildren().clear();
+		
+		backbtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				langSceneInit(stage);
+				stage.setScene(sceneLang);
+				stage.show();	
+			}
+			
+		});
+		
+		run.getChildren().add(backbtn);
+		
+		if (french) {
+			if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+				HBox card = new HBox();
+				Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+				Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+				if (decksF.get(v).getCard(cardNum).isFront()) {
+					card.getChildren().add(phrase);
+				} else {
+					card.getChildren().add(translation);
+				}
+				run.getChildren().add(card);
+			}
+		} else {
+			if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+				HBox card = new HBox();
+				Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+				Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+				if (decksS.get(v).getCard(cardNum).isFront()) {
+					card.getChildren().add(phrase);
+				} else {
+					card.getChildren().add(translation);
+				}
+				run.getChildren().add(card);
+			}
+		}
+		
+		sceneRun.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			
+			@Override
+			public void handle (KeyEvent e) {
+				if (e.getCode().equals(KeyCode.LEFT)) {	
+					
+					if (cardNum > 0) cardNum--;
+					run.getChildren().clear();
+					
+					if (french) {
+						if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+							if (decksF.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					} else {
+						if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+							if (decksS.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					}
+				}
+				
+				if (e.getCode().equals(KeyCode.RIGHT)) {	
+					
+					if (french) {
+						if (cardNum < decksF.get(v).getNumCards() - 1) cardNum++;
+					} else {
+						if (cardNum < decksS.get(v).getNumCards() - 1) cardNum++;
+					}
+
+					run.getChildren().clear();
+					
+					if (french) {
+						if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+							if (decksF.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					} else {
+						if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+							if (decksS.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					}
+				}
+				
+				if (e.getCode().equals(KeyCode.SPACE)) {
+					
+					run.getChildren().clear();
+					decksF.get(v).getCard(cardNum).flip();
+					
+					if (french) {
+						if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+							if (decksF.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					} else {
+						if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+							HBox card = new HBox();
+							Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+							Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+							if (decksS.get(v).getCard(cardNum).isFront()) {
+								card.getChildren().add(phrase);
+							} else {
+								card.getChildren().add(translation);
+							}
+							run.getChildren().addAll(card, backbtn);
+						}
+					}
+				}
+			}
+		});	
+	}	
 }
