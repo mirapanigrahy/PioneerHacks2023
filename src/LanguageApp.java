@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent; 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -78,7 +80,6 @@ public class LanguageApp extends Application {
 				sceneLang = new Scene(master);
 				stage.setScene(sceneLang);
 				stage.show();
-
 			}
 
 		});
@@ -91,9 +92,7 @@ public class LanguageApp extends Application {
 				sceneLang = new Scene(master);
 				stage.setScene(sceneLang);
 				stage.show();
-
 			}
-
 		});
 
 		pick.setPadding(new Insets(50));
@@ -165,11 +164,8 @@ public class LanguageApp extends Application {
 									v = i;
 								}
 							}
-						}
-						
-						
+						}	
 					}
-
 				});
 				master.getChildren().add(b);
 
@@ -190,15 +186,11 @@ public class LanguageApp extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				System.out.println("HERE1");
 				stage.setScene(sceneRun);
 				stage.show();
 				
-				System.out.println("HERE");
 				if (french) {
-					System.out.println(decksF.size());
 					if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-						System.out.println("decksF > 0 and num cards > 0");
 						int cardNum = 0;
 						HBox card = new HBox();
 						Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
@@ -313,5 +305,23 @@ public class LanguageApp extends Application {
 		scene = new Scene(pick);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	private class keyPressed implements EventHandler<KeyEvent> {
+		@Override
+		public void handle(KeyEvent e) {
+				
+			if (e.getCode().equals(KeyCode.LEFT)) {	
+				
+				
+				
+			}
+			
+			if (e.getCode().equals(KeyCode.LEFT)) {	
+				
+				
+				
+			}
+		}
 	}
 }
