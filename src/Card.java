@@ -24,6 +24,11 @@ public class Card extends Actor {
 	public boolean isFront() {
 		return front;
 	}
+	
+	@Override
+	public String toString() {
+		return getPhrase() + " " + getTranslation();
+	}
 
 	@Override
 	public void act(long now) {

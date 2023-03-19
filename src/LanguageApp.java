@@ -141,7 +141,9 @@ public class LanguageApp extends Application {
 				}
 				
 				System.out.println(decksF);
+				System.out.println("f deck size " + decksF.size());
 				System.out.println(decksS);
+				System.out.println("s deck size " + decksS.size());
 				Button b = new Button(newDeck.getName());
 				b.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -157,40 +159,15 @@ public class LanguageApp extends Application {
 								}
 							}
 
-							if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-								int cardNum = 0;
-								HBox card = new HBox();
-								Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-								Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-								if (decksF.get(v).getCard(cardNum).isFront()) {
-									card.getChildren().add(phrase);
-								} else {
-									card.getChildren().add(translation);
-								}
-								run.getChildren().add(card);
-							}
-
 						} else {
 							for (int i = 0; i < decksS.size(); i++) {
 								if (b.getText().equals(decksS.get(i).getName())) {
 									v = i;
 								}
 							}
-
-							if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
-								int cardNum = 0;
-								HBox card = new HBox();
-								Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
-								Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
-								if (decksS.get(v).getCard(cardNum).isFront()) {
-									card.getChildren().add(phrase);
-								} else {
-									card.getChildren().add(translation);
-								}
-								run.getChildren().add(card);
-							}
 						}
-
+						
+						
 					}
 
 				});
@@ -213,28 +190,39 @@ public class LanguageApp extends Application {
 			public void handle(ActionEvent event) {
 				stage.setScene(sceneRun);
 				stage.show();
+				
+				if (french) {
+					if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
+						int cardNum = 0;
+						HBox card = new HBox();
+						Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
+						Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
+						if (decksF.get(v).getCard(cardNum).isFront()) {
+							card.getChildren().add(phrase);
+						} else {
+							card.getChildren().add(translation);
+						}
+						run.getChildren().add(card);
+					}
+				} else {
+					if (decksS.size() > 0 && decksS.get(v).getNumCards() > 0) {
+						int cardNum = 0;
+						HBox card = new HBox();
+						Label phrase = new Label(decksS.get(v).getCard(cardNum).getPhrase());
+						Label translation = new Label(decksS.get(v).getCard(cardNum).getTranslation());
+						if (decksS.get(v).getCard(cardNum).isFront()) {
+							card.getChildren().add(phrase);
+						} else {
+							card.getChildren().add(translation);
+						}
+						run.getChildren().add(card);
+					}
+				}
 
 			}
 
 		});
-
-		if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-			
-			
-			int cardNum = 0;
-			HBox card = new HBox();
-			Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-			Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-			if (decksF.get(v).getCard(cardNum).isFront()) {
-				card.getChildren().add(phrase);
-			} else {
-				card.getChildren().add(translation);
-			}
-			run.getChildren().add(card);
-		}
-		
-		System.out.println("outside");
-		
+				
 		sceneTest = new Scene(testpage);
 
 		Button test = new Button("Test");
@@ -258,23 +246,17 @@ public class LanguageApp extends Application {
 				String cf = cardFront.getText();
 				String cb = cardBack.getText();
 				Card c = new Card(cf, cb, true);
-				decksF.get(v).addCard(c);
+				
+				if (french) {
+					decksF.get(v).addCard(c);
+					System.out.println("f: " + decksF.get(v));
+				} else {
+					decksS.get(v).addCard(c);
+					System.out.println("s: " + decksS.get(v));
+				}
 				
 				run.getChildren().clear();
 				
-				if (decksF.size() > 0 && decksF.get(v).getNumCards() > 0) {
-					System.out.println("num cards is not 0");
-					int cardNum = 0;
-					HBox card = new HBox();
-					Label phrase = new Label(decksF.get(v).getCard(cardNum).getPhrase());
-					Label translation = new Label(decksF.get(v).getCard(cardNum).getTranslation());
-					if (decksF.get(v).getCard(cardNum).isFront()) {
-						card.getChildren().add(phrase);
-					} else {
-						card.getChildren().add(translation);
-					}
-					run.getChildren().add(card);
-				}
 			}
 		});
 
@@ -305,7 +287,10 @@ public class LanguageApp extends Application {
 			master.getChildren().addAll(frenchTitle, createDeck, MyDecksTitleS);
 		}
 
-		for(int i = 0; i<decksF.size(); i++) {
+		
+		//FIXXX
+		
+		for(int i = 0; i < decksF.size(); i++) {
 			Button b = new Button(decksF.get(i).getName());
 			b.setOnAction(new EventHandler<ActionEvent>() {
 
