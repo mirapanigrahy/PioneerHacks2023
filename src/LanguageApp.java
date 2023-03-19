@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -51,10 +52,11 @@ public class LanguageApp extends Application {
 	Label spanishTitle = new Label("Spanish to English");
 	Label MyDecksTitle = new Label("My Decks");
 	Label pickTitle = new Label("Pick a Language");
+	Label addDeckTitle = new Label("Deck Name:");
+	Label cardBack = new Label("");
 	
 	TextField deckName = new TextField();
 	TextField cardFront = new TextField();
-	TextField cardBack = new TextField();
 	
 	int cardNum = 0;
 	int v = 0;
@@ -129,7 +131,7 @@ public class LanguageApp extends Application {
 		pickTitle.setTextFill(c);
 		pickTitle.setFont(f);
 
-		frenchbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		frenchbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -141,7 +143,7 @@ public class LanguageApp extends Application {
 
 		});
 
-		spanishbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		spanishbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -159,7 +161,8 @@ public class LanguageApp extends Application {
 		master.getChildren().clear();
 		master.setPadding(p);
 		
-		backbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				startSceneInit(stage);
@@ -168,8 +171,8 @@ public class LanguageApp extends Application {
 			}
 			
 		});
-		
-		createDeck.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		createDeck.setStyle("-fx-background-color: #F8E8E8FF");
+		createDeck.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -190,7 +193,8 @@ public class LanguageApp extends Application {
 		if (french) {
 			for (int i = 0; i < decksF.size(); i++) {
 				Button b = new Button(decksF.get(i).getName());
-				b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				b.setStyle("-fx-background-color: #F8E8E8FF");
+				b.setOnMousePressed(new EventHandler<MouseEvent>() {
 		
 					@Override
 					public void handle(MouseEvent event) {
@@ -212,7 +216,8 @@ public class LanguageApp extends Application {
 		
 			for (int i = 0; i < decksS.size(); i++) {
 				Button b = new Button(decksS.get(i).getName());
-				b.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				b.setStyle("-fx-background-color: #F8E8E8FF");
+				b.setOnMousePressed(new EventHandler<MouseEvent>() {
 		
 					@Override
 					public void handle(MouseEvent event) {
@@ -241,7 +246,7 @@ public class LanguageApp extends Application {
 		savebtn.setStyle("-fx-background-color: #F8E8E8FF");
 		savebtn.setTextFill(btnColor);
 		
-		savebtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		savebtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				String a = deckName.getText();
@@ -259,7 +264,7 @@ public class LanguageApp extends Application {
 			}
 		});
 		
-		cards.getChildren().addAll(deckName, savebtn);
+		cards.getChildren().addAll(addDeckTitle, deckName, savebtn);
 	}
 	
 	public void playInit(Stage stage) {
@@ -282,13 +287,16 @@ public class LanguageApp extends Application {
         Color termColor = new Color((double)25/255,(double)95/255,(double)109/255,1);
         termLabel.setTextFill(termColor);
         translationLabel.setTextFill(termColor);
+        cardBack.setTextFill(termColor);
 		
 		test.setStyle("-fx-background-color: #F8E8E8FF");
 		test.setTextFill(btnColor);
 		runCards.setStyle("-fx-background-color: #F8E8E8FF");
-		runCards.setTextFill(btnColor);	
-
-		runCards.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		runCards.setTextFill(btnColor);
+		addCards.setStyle("-fx-background-color: #F8E8E8FF");
+		addCards.setTextFill(btnColor);
+		
+		runCards.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -299,7 +307,7 @@ public class LanguageApp extends Application {
 			}
 		});
 		
-		test.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		test.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -309,13 +317,25 @@ public class LanguageApp extends Application {
 			}
 		});
 		
-		addCards.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		addCards.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				String cf = cardFront.getText();
+				try {
+					if (french) {
+						cardBack.setText(Translator.translate("en", "fr", cardFront.getText()));
+					} else {
+						cardBack.setText(Translator.translate("en", "es", cardFront.getText()));
+					}
+					System.out.println(cardBack.getText());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("failed");
+					e.printStackTrace();
+				}
 				String cb = cardBack.getText();
+				//cardBack.setText("");
 				cardFront.clear();
-				cardBack.clear();
 				Card c = new Card(cf, cb, true);
 				
 				if (french) {
@@ -327,8 +347,8 @@ public class LanguageApp extends Application {
 				run.getChildren().clear();	
 			}
 		});
-		
-		backbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				langSceneInit(stage);
@@ -348,7 +368,8 @@ public class LanguageApp extends Application {
 		testpage.setPadding(p);
 		testpage.setSpacing(10);
 		
-		backbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				playInit(stage);
@@ -389,8 +410,8 @@ public class LanguageApp extends Application {
 		run.setPadding(p);
 		run.setSpacing(10);
 
-		
-		backbtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		backbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		backbtn.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				playInit(stage);
@@ -430,7 +451,6 @@ public class LanguageApp extends Application {
 			}
 		}
 		
-		//run.getChildren().add(backbtn);	
 		sceneRun.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			
 			@Override
@@ -553,9 +573,7 @@ public class LanguageApp extends Application {
 						}
 					}
 				}
-				
-				//run.getChildren().add(backbtn);
-				
+								
 			}
 		});	
 	}	
