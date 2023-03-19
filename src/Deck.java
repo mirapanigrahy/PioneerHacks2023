@@ -3,11 +3,9 @@ import java.util.*;
 public class Deck {
 	
     ArrayList<Card> cards = new ArrayList<Card>();
-   // private int numCards = 0;
     private String name;
 
-    public Deck(String name, int numCards, ArrayList<Card> cards) {
-       // this.numCards = numCards;
+    public Deck(String name, ArrayList<Card> cards) {
         this.cards = cards;
         this.name = name;
     }
@@ -25,8 +23,7 @@ public class Deck {
     }
     
     public int getNumCards() {
-    	//return numCards;
-    	return -1;
+    	return cards.size();
     }
     
     public String getName() {
@@ -54,6 +51,12 @@ public class Deck {
              cards.set(i, cards.get(idx));
              cards.set(idx, c);
          }
+    }
+    
+    @Override
+    public String toString() {
+    	String s = cards.toString();
+    	return s;
     }
 
 
