@@ -62,20 +62,33 @@ public class LanguageApp extends Application {
 		play = new VBox();
 		run = new VBox();
 		testpage = new VBox();
+		pick.setStyle("-fx-background-color: #ffd7b5");
+		master.setStyle("-fx-background-color: #ffd7b5");
+		cards.setStyle("-fx-background-color: #ffd7b5");
+		play.setStyle("-fx-background-color: #ffd7b5");
+		run.setStyle("-fx-background-color: #ffd7b5");
+		testpage.setStyle("-fx-background-color: #ffd7b5");
 
 
 		//pick language
 
 		Label pickTitle = new Label("Pick a language");
-		pickTitle.setTextFill(Color.BLUEVIOLET);
+		Color c = new Color((double)25/255,(double)95/255,(double)109/255,1);
+		pickTitle.setTextFill(c);
 		pickTitle.setFont(new Font("Cambria", 32));
 
+		Color btnColor = new Color((double)13/255,(double)89/255,(double)86/255,1);
+
 		frenchbtn = new Button("French to English");
+		frenchbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		frenchbtn.setTextFill(btnColor);
+
+		sceneLang = new Scene(master);
 		frenchbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				sceneLang = new Scene(master);
+
 				stage.setScene(sceneLang);
 				stage.show();
 
@@ -84,11 +97,12 @@ public class LanguageApp extends Application {
 		});
 
 		spanishbtn = new Button("Spanish to English");
+		spanishbtn.setStyle("-fx-background-color: #F8E8E8FF");
+		spanishbtn.setTextFill(btnColor);
 		spanishbtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				sceneLang = new Scene(master);
 				stage.setScene(sceneLang);
 				stage.show();
 
@@ -106,19 +120,19 @@ public class LanguageApp extends Application {
 		//cardScene = new Scene(cardHolder);
 
 		Label frenchTitle = new Label("French to English");
-		frenchTitle.setTextFill(Color.BLUEVIOLET);
+		frenchTitle.setTextFill(c);
 		frenchTitle.setFont(new Font("Cambria", 32));
 
 		Label spanishTitle = new Label("Spanish to English");
-		spanishTitle.setTextFill(Color.BLUEVIOLET);
+		spanishTitle.setTextFill(c);
 		spanishTitle.setFont(new Font("Cambria", 32));
 
 		Label MyDecksTitleF = new Label("My Decks");
-		MyDecksTitleF.setTextFill(Color.BLUEVIOLET);
+		MyDecksTitleF.setTextFill(c);
 		MyDecksTitleF.setFont(new Font("Cambria", 22));
 
 		Label MyDecksTitleS = new Label("My Decks");
-		MyDecksTitleS.setTextFill(Color.BLUEVIOLET);
+		MyDecksTitleS.setTextFill(c);
 		MyDecksTitleS.setFont(new Font("Cambria", 22));
 
 
@@ -127,6 +141,8 @@ public class LanguageApp extends Application {
 
 		TextField deckName = new TextField();
 		Button savebtn = new Button("Save");
+		savebtn.setStyle("-fx-background-color: #F8E8E8FF");
+		savebtn.setTextFill(btnColor);
 		savebtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -184,6 +200,8 @@ public class LanguageApp extends Application {
 		sceneRun = new Scene(run);
 
 		Button runCards = new Button("Run Through Cards");
+		runCards.setStyle("-fx-background-color: #F8E8E8FF");
+		runCards.setTextFill(btnColor);
 		System.out.println(runCards);
 		runCards.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -232,6 +250,9 @@ public class LanguageApp extends Application {
 		sceneTest = new Scene(testpage);
 
 		Button test = new Button("Test");
+		test.setStyle("-fx-background-color: #F8E8E8FF");
+		test.setTextFill(btnColor);
+
 		test.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -311,6 +332,7 @@ public class LanguageApp extends Application {
 		}
 
 		scene = new Scene(pick);
+
 		stage.setScene(scene);
 		stage.show();
 	}
