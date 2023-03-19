@@ -21,24 +21,11 @@
 //
 //public class GameWorld extends World {
 //
-//	private Game game;
-//	private boolean gameLost;
-//	private boolean gameWon; 
-//	private Image happyMcLeod;
-//	private Image sadMcLeod;
-// 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
-// 	private int LENGTH = 4; 
-//	private int IMAGE_WIDTH = 90; 
-//	private int DIST = IMAGE_WIDTH + 10;  		
-//	private int WIN_VAL = 2048;  
-//	private int SPEED = 25;
-//	private int SHIFT = 10;
+//	private LanguageApp app;
 //	
-//	public GameWorld(Game g) {
-//		game = g;
-//		happyMcLeod = new Image("file:images/happy_mcleod.png");
-//		sadMcLeod = new Image("file:images/sad_mcleod.png");
-//		setPrefSize(3 * DIST + IMAGE_WIDTH + 2*SHIFT, 3 * DIST + IMAGE_WIDTH + 2*SHIFT);
+//	
+//	public GameWorld(app a) {
+//		app = a;
 //	}
 //	
 //	@Override
@@ -46,24 +33,6 @@
 //		
 //	}
 //	
-//	public Tile getTile(int r, int c) {
-//		for (int i = 0; i < tiles.size(); i++) {
-//			if (tiles.get(i).getRow() == r && tiles.get(i).getCol() == c) {
-//				return tiles.get(i);
-//			}
-//		}
-//		return null;
-//	}
-//	
-//	public void removeTile(int r, int c) {
-//		for (int i = 0; i < tiles.size(); i++) {
-//			if (tiles.get(i).getRow() == r && tiles.get(i).getCol() == c) {
-//				tiles.remove(i);
-//				break; 
-//			}
-//		}
-//	}
-//
 //	@Override
 //	public void onDimensionsInitialized() {	
 //		ImageView background = new ImageView(new Image("file:images/background.png"));

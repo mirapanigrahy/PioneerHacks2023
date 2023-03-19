@@ -25,6 +25,10 @@ public class Card extends Actor {
 		return front;
 	}
 	
+	public void flip() {
+		front = !front;
+	}
+	
 	@Override
 	public String toString() {
 		return getPhrase() + " " + getTranslation();
